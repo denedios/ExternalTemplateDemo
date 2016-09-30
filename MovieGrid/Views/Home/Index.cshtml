@@ -30,14 +30,22 @@
           .Sortable()
           .Editable(editable => editable.Mode(GridEditMode.PopUp))
           .DataSource(ds => ds
-                .Ajax()
-                .Events(events => events.Error("error_handler"))
-                .Model(m => m.Id(mv => mv.MovieId))
-                .Read(r => r.Action("GetAllMovies", "Home"))
-            )
-        )
+              .Ajax()
+              .Events(events => events.Error("error_handler"))
+              .Model(m => m.Id(mv => mv.MovieId))
+              .Read(r => r.Action("GetAllMovies", "Home"))
+          )
+          )
 
 </div>
+
+
+@(Html.Kendo().Window().Name("Details")
+    .Title("Movie Details")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(350))
 
 
 <script type="text/javascript">
