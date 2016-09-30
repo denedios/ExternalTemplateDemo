@@ -1,33 +1,62 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using MovieGrid.Models
+
+
+@{
+    ViewBag.Title = "Movie Grid Home Page";
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Movie Neural Network Processor</h1>
 </div>
 
 
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+
+    @(Html.Kendo().Grid<Movie>()
+          .Name("grid")
+          .Columns(c =>
+          {
+              c.Bound(m => m.MovieId).Width(4);
+              c.Bound(m => m.Title).Width(200);
+              c.Bound(m => m.Description).Width(400);
+              c.Bound(m => m.ReleaseDate).Format("{0:MMMM d, yyyy}").Width(200);
+              c.Bound(m => m.Director).Visible(false);
+              c.Bound(m => m.Genre).Visible(false);
+              c.Bound(m => m.Length).Visible(false);
+              c.Bound(m => m.Rating).Visible(false);
+              c.Command(command => command.Custom("ViewDetails").Click("showDetails")).Width(180);
+          })
+          .Sortable()
+          .Editable(editable => editable.Mode(GridEditMode.PopUp))
+          .DataSource(ds => ds
+                .Ajax()
+                .Events(events => events.Error("error_handler"))
+                .Model(m => m.Id(mv => mv.MovieId))
+                .Read(r => r.Action("GetAllMovies", "Home"))
+            )
+        )
+
 </div>
+
+
+<script type="text/javascript">
+    
+
+
+    
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+</script>
