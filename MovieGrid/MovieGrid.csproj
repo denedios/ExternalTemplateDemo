@@ -1002,6 +1002,7 @@
     <Content Include="Scripts\kendo\kendo.sortable.min.js" />
     <Content Include="Scripts\kendo\kendo.splitter.min.js" />
     <Content Include="Scripts\kendo\kendo.tabstrip.min.js" />
+    <Content Include="Scripts\kendo\kendo.templateloader.js" />
     <Content Include="Scripts\kendo\kendo.timepicker.min.js" />
     <Content Include="Scripts\kendo\kendo.timezones.min.js" />
     <Content Include="Scripts\kendo\kendo.toolbar.min.js" />
@@ -1049,6 +1050,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Templates\movieDetails.tmp.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

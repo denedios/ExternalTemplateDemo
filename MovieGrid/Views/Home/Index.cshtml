@@ -5,14 +5,19 @@
     ViewBag.Title = "Movie Grid Home Page";
 }
 
+
+
+<script src="~/Scripts/kendo/kendo.templateloader.js"></script>
+
+
 <div class="jumbotron">
     <h1>Movie Neural Network Processor</h1>
 </div>
 
 
-
 <div class="row">
 
+    @*MOVIES GRID*@
     @(Html.Kendo().Grid<Movie>()
           .Name("grid")
           .Columns(c =>
@@ -34,25 +39,63 @@
               .Events(events => events.Error("error_handler"))
               .Model(m => m.Id(mv => mv.MovieId))
               .Read(r => r.Action("GetAllMovies", "Home"))
-          )
+            )
           )
 
+
+    
 </div>
 
-
+@*MODAL WINDOW*@
 @(Html.Kendo().Window().Name("Details")
     .Title("Movie Details")
     .Visible(false)
     .Modal(true)
     .Draggable(true)
-    .Width(350))
+    .Width(400))
 
 
 <script type="text/javascript">
     
+    var _itemTemplate;
 
+    $(function () {
 
-    
+        // load external template(s)
+        templatesLoader.loadExtTemplates(
+            { path: "@Url.Content("~/Templates/movieDetails.tmp.htm")", tag: "movie-details" }
+        );
+        //"~/Templates/movieDetails.tmp.htm"
+        //Subscribe to the event triggered when the templates are loaded
+        //Do not load templates before they are available
+        $(document).bind("TEMPLATES_LOADED",
+                function (e, path) {
+                    console.log('TEMPLATES LOADED');
+
+                    //Compile and cache templates
+                    _itemTemplate = kendo.template($("#movie-details").html(), { useWithBlock: false });
+
+                });
+    });
+
+    function showDetails(e) {
+
+        e.preventDefault();
+
+        // get the row's data for which we are displaying the details
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+        // instantiate the window object and set its content 
+        var movieDetailsWidow = $("#Details").data("kendoWindow");
+        movieDetailsWidow.content(_itemTemplate(dataItem));
+
+        kendo.bind(movieDetailsWidow.element, dataItem);
+
+        // center and open the window
+        movieDetailsWidow.center().open();
+
+    }
+
     function error_handler(e) {
         if (e.errors) {
             var message = "Errors:\n";
