@@ -57,23 +57,26 @@
 
 <script type="text/javascript">
     
-    var _itemTemplate;
+    // declare any template vars here, so the scope is global for this view
+    var _movieDetailTemplate;
 
+    // in doc ready block we load the template(s) and bind to the TEMPLATES_LOADED event
     $(function () {
 
         // load external template(s)
         templatesLoader.loadExtTemplates(
             { path: "@Url.Content("~/Templates/movieDetails.tmp.htm")", tag: "movie-details" }
         );
-        //"~/Templates/movieDetails.tmp.htm"
+        
         //Subscribe to the event triggered when the templates are loaded
         //Do not load templates before they are available
         $(document).bind("TEMPLATES_LOADED",
                 function (e, path) {
+
                     console.log('TEMPLATES LOADED');
 
                     //Compile and cache templates
-                    _itemTemplate = kendo.template($("#movie-details").html(), { useWithBlock: false });
+                    _movieDetailTemplate = kendo.template($("#movie-details").html(), { useWithBlock: false });
 
                 });
     });
@@ -87,7 +90,7 @@
 
         // instantiate the window object and set its content 
         var movieDetailsWidow = $("#Details").data("kendoWindow");
-        movieDetailsWidow.content(_itemTemplate(dataItem));
+        movieDetailsWidow.content(_movieDetailTemplate(dataItem));
 
         kendo.bind(movieDetailsWidow.element, dataItem);
 
